@@ -1,12 +1,21 @@
+extern crate clap;
+
 use std::error;
 use std::process::Command;
 use std::str;
 
+use clap::App;
 use users::get_current_username;
 
 type Result<T> = std::result::Result<T, Box<dyn error::Error>>;
 
 fn main() -> Result<()> {
+    App::new("fix-compaudit")
+        .version(env!("VERSION"))
+        .author("PurpleBooth")
+        .about("Correct the permissions problems that highlighted by `compaudit`. Fixing these is kinda a pain to do manually. This should fix them.")
+        .get_matches();
+
     fix_comp_audit_problems(list_compuaudit_problems)
 }
 

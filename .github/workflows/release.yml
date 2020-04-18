@@ -97,6 +97,8 @@ jobs:
       - uses: actions/checkout@master
         with:
           lfs: true
+      - id: get_version
+        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
       - run: ${{ matrix.deps }}
       - uses: actions-rs/toolchain@v1
         with:
@@ -104,6 +106,8 @@ jobs:
           toolchain: stable
           override: true
       - uses: actions-rs/cargo@v1
+        env:
+          VERSION: ${{ steps.get_version.outputs.VERSION }}
         with:
           command: build
           args: --release

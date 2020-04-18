@@ -1,7 +1,7 @@
 # Fix Compaudit Issues
 
-A binary that takes a really long way around to run the below script but
-in rust.
+Correct the permissions problems that highlighted by `compaudit`. Fixing
+these is kinda a pain to do manually. This should fix them.
 
 Depends on having `chmod`, `chown`, `zsh` and `compaudit` available.
 
