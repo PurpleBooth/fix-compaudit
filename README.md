@@ -3,6 +3,36 @@
 A binary that takes a really long way around to run the below script but
 in rust.
 
+Depends on having `chmod`, `chown`, `zsh` and `compaudit` available.
+
+## Usage
+
+``` bash
+fix-compaudit
+```
+
+## Installing
+
+First tap my homebrew repo
+
+``` shell
+brew tap PurpleBooth/repo
+```
+
+Next install the binary
+
+``` shell
+brew install fix-compaudit
+```
+
+You can also download the [latest
+release](https://github.com/PurpleBooth/alfred-emoji-snippet-pack/releases/latest)
+and run it.
+
+## How does it work
+
+Well here's a version of this in bash, if that makes it clearer
+
 ``` shell
 #!/usr/bin/env bash
 
@@ -33,18 +63,6 @@ for FILE in "${AUDIT_PROBLEMS[@]}"; do
         chmod -R go-w "$FILE"
     fi
 done
-```
-
-Depends on having `chmod`, `chown`, `zsh` and `compaudit` available.
-
-## Usage
-
-``` bash
-cargo run
-```
-
-``` bash
-./fix-compaudit
 ```
 
 ## License
