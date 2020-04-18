@@ -10,9 +10,9 @@ use users::get_current_username;
 type Result<T> = std::result::Result<T, Box<dyn error::Error>>;
 
 fn main() -> Result<()> {
-    App::new("fix-compaudit")
+    App::new(env!("APP_NAME"))
         .version(env!("VERSION"))
-        .author("PurpleBooth")
+        .author(env!("AUTHOR_EMAIL"))
         .about("Correct the permissions problems that highlighted by `compaudit`. Fixing these is kinda a pain to do manually. This should fix them.")
         .get_matches();
 
