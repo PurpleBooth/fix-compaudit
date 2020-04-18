@@ -26,7 +26,7 @@ brew install fix-compaudit
 ```
 
 You can also download the [latest
-release](https://github.com/PurpleBooth/alfred-emoji-snippet-pack/releases/latest)
+release](https://github.com/PurpleBooth/fix-compaudit/releases/latest)
 and run it.
 
 ## How does it work
