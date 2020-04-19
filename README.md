@@ -22,7 +22,7 @@ brew tap PurpleBooth/repo
 Next install the binary
 
 ``` shell
-brew install fix-compaudit
+brew install PurpleBooth/repo/fix-compaudit
 ```
 
 You can also download the [latest
