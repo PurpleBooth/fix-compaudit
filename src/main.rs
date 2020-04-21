@@ -4,16 +4,18 @@ use std::error;
 use std::process::Command;
 use std::str;
 
+use clap::crate_authors;
+use clap::crate_version;
 use clap::App;
 use users::get_current_username;
 
 type Result<T> = std::result::Result<T, Box<dyn error::Error>>;
 
 fn main() -> Result<()> {
-    App::new(env!("APP_NAME"))
-        .version(env!("VERSION"))
-        .author(env!("AUTHOR_EMAIL"))
-        .about("Correct the permissions problems that highlighted by `compaudit`. Fixing these is kinda a pain to do manually. This should fix them.")
+    App::new(env!("CARGO_PKG_NAME"))
+        .version(crate_version!())
+        .author(crate_authors!())
+        .about(env!("CARGO_PKG_DESCRIPTION"))
         .get_matches();
 
     fix_comp_audit_problems(list_compuaudit_problems)

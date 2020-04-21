@@ -1,8 +1,9 @@
 [package]
 name = "fix-compaudit"
 version = "0.5.0"
-authors = ["Billie Thompson <billie@billiecodes.com>"]
+authors = ["Billie Thompson <billie+fix-compaudit@billiecodes.com>"]
 edition = "2018"
+description = "Correct the permissions problems that highlighted by `compaudit`. Fixing these is kinda a pain to do manually. This should fix them."
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
