@@ -181,10 +181,7 @@ jobs:
       - shell: bash
         env:
           VERSION: '${{ steps.get_version.outputs.VERSION }}'
-        run: |
-          TEMP_FILE="$(mktemp)"
-          toml set Cargo.toml package.version "${VERSION:1}" > "$TEMP_FILE"
-          mv "$TEMP_FILE" Cargo.toml
+        run: toml set Cargo.toml package.version "${VERSION:1}" > "Cargo.toml.1" && mv "Cargo.toml.1" Cargo.toml
       - uses: actions-rs/cargo@v1
         env:
           VERSION: '${{ steps.get_version.outputs.VERSION }}'
@@ -229,10 +226,7 @@ jobs:
       - shell: bash
         env:
           VERSION: '${{ steps.get_version.outputs.VERSION }}'
-        run: |
-          TEMP_FILE="$(mktemp)"
-          toml set Cargo.toml package.version "${VERSION:1}" > "$TEMP_FILE"
-          mv "$TEMP_FILE" Cargo.toml
+        run: toml set Cargo.toml package.version "${VERSION:1}" > "Cargo.toml.1" && mv "Cargo.toml.1" Cargo.toml
       - uses: stefanzweifel/git-auto-commit-action@v4.1.3
         with:
           commit_message: Bump cargo version
