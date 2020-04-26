@@ -5,8 +5,10 @@ authors = ["Billie Thompson <billie+fix-compaudit@billiecodes.com>"]
 edition = "2018"
 description = "Correct the permissions problems that highlighted by `compaudit`. Fixing these is kinda a pain to do manually. This should fix them."
 license = "Creative Commons Zero v1.0 Universal"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+readme = "README.md"
+repository = "https://github.com/PurpleBooth/fix-compaudit/"
+keywords = ["zsh", "permissions"]
+categories = ["command-line-utilities"]
 
 [dependencies]
 users = "0.10"

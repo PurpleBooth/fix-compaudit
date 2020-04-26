@@ -1,12 +1,8 @@
 extern crate clap;
 
-use std::error;
-use std::process::Command;
-use std::str;
+use std::{error, process::Command, str};
 
-use clap::crate_authors;
-use clap::crate_version;
-use clap::App;
+use clap::{crate_authors, crate_version, App};
 use users::get_current_username;
 
 type Result<T> = std::result::Result<T, Box<dyn error::Error>>;
@@ -87,10 +83,13 @@ fn fix_comp_audit_problems(
 
 #[cfg(test)]
 mod tests {
-    use std::fs;
-    use std::fs::File;
-    use std::os::unix::fs::MetadataExt;
-    use std::os::unix::fs::PermissionsExt;
+    #![allow(clippy::wildcard_imports)]
+
+    use std::{
+        fs,
+        fs::File,
+        os::unix::fs::{MetadataExt, PermissionsExt},
+    };
 
     use tempfile::tempdir;
     use users::get_current_uid;
