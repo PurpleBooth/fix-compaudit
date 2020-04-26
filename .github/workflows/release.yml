@@ -1,8 +1,7 @@
 'on':
   push:
     branches:
-      - '*'
-  pull_request: null
+      - 'master'
 jobs:
   check:
     runs-on: ubuntu-latest
