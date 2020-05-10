@@ -26,14 +26,11 @@ fn list_compuaudit_problems() -> Result<Vec<std::path::PathBuf>> {
 
     eprint!("{}", str::from_utf8(&command_output.stderr)?);
 
-    match command_output.status.code() {
-        None => {
-            return Err(Box::from(format!(
-                "Command failed, terminated without exit code (probably via signal): {}",
-                &compaudit_check_command
-            )))
-        }
-        Some(_) => {}
+    if let None = command_output.status.code() {
+        return Err(Box::from(format!(
+            "Command failed, terminated without exit code (probably via signal): {}",
+            &compaudit_check_command
+        )));
     }
 
     let output = str::from_utf8(&command_output.stdout)?;
