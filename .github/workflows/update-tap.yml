@@ -111,7 +111,7 @@ jobs:
           brew test-bot \
             --bintray-org="$BINTRAY_ORG" \
             --root-url="$BINTRAY_DL_URL" \
-            --tap purplebooth/homebrew-repo \
+            --tap=purplebooth/homebrew-repo \
             "purplebooth/repo/$REPOSITORY_NAME"
         env:
           REPOSITORY_NAME: ${{ steps.get_repository_name.outputs.REPOSITORY_NAME }}
