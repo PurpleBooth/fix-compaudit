@@ -74,10 +74,16 @@ jobs:
         env:
           GITHUB_ACTOR: ${{ github.actor }}
           FORMULA_LOCATION: homebrew-repo/Formula/${{ steps.get_repository_name.outputs.REPOSITORY_NAME }}.rb
+          GIT_AUTHOR_NAME: ${{ github.actor }}
+          GIT_AUTHOR_EMAIL: ${{ github.actor }}@users.noreply.github.com
+          GIT_COMMITTER_NAME: ${{ github.actor }}
+          GIT_COMMITTER_EMAIL: ${{ github.actor }}@users.noreply.github.com
+          EMAIL: ${{ github.actor }}@users.noreply.github.com
         run: |
           brew update
           brew tap purplebooth/homebrew-repo
           cp formula/formula.rb "$(brew --repo)/Library/Taps/purplebooth/$FORMULA_LOCATION"
+          (cd "$(brew --repo)/Library/Taps/purplebooth/" && git commit -a -m "fix: Update formula" )
       - shell: bash
         run: |
           brew test-bot \
