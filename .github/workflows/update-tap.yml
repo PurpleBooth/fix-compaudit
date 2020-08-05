@@ -83,7 +83,7 @@ jobs:
           brew update
           brew tap purplebooth/homebrew-repo
           cp formula/formula.rb "$(brew --repo)/Library/Taps/purplebooth/$FORMULA_LOCATION"
-          (cd "$(brew --repo)/Library/Taps/purplebooth/" && git commit -a -m "fix: Update formula" )
+          (cd "$(brew --repo)/Library/Taps/purplebooth/" && git add . && git commit --message "fix: Update formula" )
       - shell: bash
         run: |
           brew test-bot \
