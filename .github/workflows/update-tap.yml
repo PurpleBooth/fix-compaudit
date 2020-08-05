@@ -73,24 +73,19 @@ jobs:
       - shell: bash
         env:
           GITHUB_ACTOR: ${{ github.actor }}
+          FORMULA_LOCATION: homebrew-repo/Formula/${{ steps.get_repository_name.outputs.REPOSITORY_NAME }}.rb
         run: |
-          git config --global user.name "$GITHUB_ACTOR"
-          git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com"
           brew update
           brew tap purplebooth/homebrew-repo
-      - shell: bash
-        run: |
-          if [ ! -f "$FORMULA_LOCATION" ] || ! grep -q "$(cat ./hash/hash)" "$FORMULA_LOCATION" ; then
-            cp formula/formula.rb "$(brew --repo)/Library/Taps/purplebooth/$FORMULA_LOCATION"
-          fi
-        env:
-          FORMULA_LOCATION: homebrew-repo/Formula/${{ steps.get_repository_name.outputs.REPOSITORY_NAME }}.rb
+          cp formula/formula.rb "$(brew --repo)/Library/Taps/purplebooth/$FORMULA_LOCATION"
       - shell: bash
         run: |
           brew test-bot \
             --bintray-org="$BINTRAY_ORG" \
             --root-url="$BINTRAY_DL_URL" \
             --tap=purplebooth/homebrew-repo \
+            --git-name="$GITHUB_ACTOR" \
+            --git-email="$GITHUB_ACTOR@users.noreply.github.com" \
             "purplebooth/repo/$REPOSITORY_NAME"
         env:
           REPOSITORY_NAME: ${{ steps.get_repository_name.outputs.REPOSITORY_NAME }}
@@ -118,6 +113,8 @@ jobs:
             --bintray-org="$BINTRAY_ORG" \
             --root-url="$BINTRAY_DL_URL" \
             --tap=purplebooth/homebrew-repo \
+            --git-name="$GITHUB_ACTOR" \
+            --git-email="$GITHUB_ACTOR@users.noreply.github.com" \
             --publish
         env:
           HOMEBREW_BINTRAY_USER: purplebooth
