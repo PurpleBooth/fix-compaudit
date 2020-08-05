@@ -86,7 +86,7 @@ jobs:
           FORMULA_LOCATION: homebrew-repo/Formula/${{ steps.get_repository_name.outputs.REPOSITORY_NAME }}.rb
       - shell: bash
         run: |
-          mkdir -p "$(brew --repo)/Library/Taps/purplebooth"
+          brew tap purplebooth/homebrew-repo
           cp -r ./homebrew-repo/. "$(brew --repo)/Library/Taps/purplebooth/homebrew-repo"
       - shell: bash
         run: |
@@ -138,7 +138,7 @@ jobs:
             --ci-upload \
             --bintray-org="$BINTRAY_ORG" \
             --root-url="$BINTRAY_DL_URL" \
-            --tap purplebooth/homebrew-repo \
+            --tap=purplebooth/homebrew-repo \
             --publish
         env:
           HOMEBREW_BINTRAY_USER: purplebooth
