@@ -83,7 +83,8 @@ jobs:
           brew update
           brew tap purplebooth/homebrew-repo
           cp formula/formula.rb "$(brew --repo)/Library/Taps/purplebooth/$FORMULA_LOCATION"
-          (cd "$(brew --repo)/Library/Taps/purplebooth/homebrew-repo" && git add . && git commit --message "fix: Update formula" )
+
+          find $(brew --repo)/Library/ -name duti.rb -o -name fmdiff.rb -o -name rbenv-gemset.rb -o -name re2c.rb -delete
       - shell: bash
         run: |
           brew test-bot \
