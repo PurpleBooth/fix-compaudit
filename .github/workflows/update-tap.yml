@@ -92,7 +92,6 @@ jobs:
           brew test-bot \
             --bintray-org="$BINTRAY_ORG" \
             --root-url="$BINTRAY_DL_URL" \
-            --tap=purplebooth/repo \
             --git-name="$GITHUB_ACTOR" \
             --git-email="$GITHUB_ACTOR@users.noreply.github.com" \
             "purplebooth/repo/$REPOSITORY_NAME"
@@ -121,7 +120,6 @@ jobs:
             --ci-upload \
             --bintray-org="$BINTRAY_ORG" \
             --root-url="$BINTRAY_DL_URL" \
-            --tap=purplebooth/repo \
             --git-name="$GITHUB_ACTOR" \
             --git-email="$GITHUB_ACTOR@users.noreply.github.com" \
             --publish
