@@ -77,14 +77,6 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: brew install-bundler-gems
       - shell: bash
-        env:
-          REPOSITORY_NAME: ${{ steps.get_repository_name.outputs.REPOSITORY_NAME }}
-          EMAIL: ${{ github.actor }}@users.noreply.github.com
-          FORMULA_LOCATION: homebrew-repo/Formula/${{ steps.get_repository_name.outputs.REPOSITORY_NAME }}.rb
-        run: |
-          brew tap purplebooth/repo
-          cp formula/formula.rb "$(brew --repo)/Library/Taps/purplebooth/$FORMULA_LOCATION"
-      - shell: bash
         run: |
           brew test-bot \
             --bintray-org="$BINTRAY_ORG" \
@@ -92,7 +84,7 @@ jobs:
             --tap=purplebooth/repo \
             --git-name="$GITHUB_ACTOR" \
             --git-email="$GITHUB_ACTOR@users.noreply.github.com" \
-            "purplebooth/repo/$REPOSITORY_NAME"
+            formula/formula.rb
         env:
           REPOSITORY_NAME: ${{ steps.get_repository_name.outputs.REPOSITORY_NAME }}
           BINTRAY_DL_URL: https://dl.bintray.com/purplebooth/bottles-repo
@@ -121,7 +113,8 @@ jobs:
             --tap=purplebooth/repo \
             --git-name="$GITHUB_ACTOR" \
             --git-email="$GITHUB_ACTOR@users.noreply.github.com" \
-            --publish
+            --publish \
+            formula/formula.rb
         env:
           HOMEBREW_BINTRAY_USER: purplebooth
           HOMEBREW_BINTRAY_KEY: "${{ secrets.HOMEBREW_BINTRAY_KEY }}"
@@ -129,6 +122,7 @@ jobs:
           BINTRAY_ORG: purplebooth
       - shell: bash
         run: |
+          cp formula/formula.rb "$(brew --repo)/Library/Taps/purplebooth/$FORMULA_LOCATION"
           cd "$(brew --repo)/Library/Taps/purplebooth/homebrew-repo"
           git add .
           git commit -m "fix: Update formula"
