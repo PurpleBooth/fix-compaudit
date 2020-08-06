@@ -63,28 +63,25 @@ jobs:
         with:
           token: ${{ secrets.COMMITTER_TOKEN }}
           path: source-repo
-      - id: get-brew-cache
-        run: |
-          echo "::set-output name=dir::$(brew --cache)"
-      - uses: actions/cache@v2
+      - name: Set up Homebrew
+        id: set-up-homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+      - name: Cache Homebrew Bundler RubyGems
+        id: cache
+        uses: actions/cache@master
         with:
-          path: ${{ steps.get-brew-cache.outputs.dir }}
-          key: ${{ runner.os }}-brew-${{ hashFiles('**/formula.rb.j2') }}
+          path: ${{ steps.set-up-homebrew.outputs.gems-path }}
+          key: ${{ runner.os }}-rubygems-${{ steps.set-up-homebrew.outputs.gems-hash }}
+          restore-keys: ${{ runner.os }}-rubygems-
+      - name: Install Homebrew Bundler RubyGems
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: brew install-bundler-gems
       - shell: bash
         env:
-          GITHUB_ACTOR: ${{ github.actor }}
           FORMULA_LOCATION: homebrew-repo/Formula/${{ steps.get_repository_name.outputs.REPOSITORY_NAME }}.rb
-          GIT_AUTHOR_NAME: ${{ github.actor }}
-          GIT_AUTHOR_EMAIL: ${{ github.actor }}@users.noreply.github.com
-          GIT_COMMITTER_NAME: ${{ github.actor }}
-          GIT_COMMITTER_EMAIL: ${{ github.actor }}@users.noreply.github.com
-          EMAIL: ${{ github.actor }}@users.noreply.github.com
         run: |
-          brew update
           brew tap purplebooth/repo
           cp formula/formula.rb "$(brew --repo)/Library/Taps/purplebooth/$FORMULA_LOCATION"
-
-          find $(brew --repo)/Library/ -name duti.rb -o -name fmdiff.rb -o -name rbenv-gemset.rb -o -name re2c.rb -delete
       - shell: bash
         run: |
           brew test-bot \
