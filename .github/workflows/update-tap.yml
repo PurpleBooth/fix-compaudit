@@ -78,10 +78,15 @@ jobs:
         run: brew install-bundler-gems
       - shell: bash
         env:
+          REPOSITORY_NAME: ${{ steps.get_repository_name.outputs.REPOSITORY_NAME }}
+          EMAIL: ${{ github.actor }}@users.noreply.github.com
           FORMULA_LOCATION: homebrew-repo/Formula/${{ steps.get_repository_name.outputs.REPOSITORY_NAME }}.rb
         run: |
           brew tap purplebooth/repo
           cp formula/formula.rb "$(brew --repo)/Library/Taps/purplebooth/$FORMULA_LOCATION"
+          git add "$(brew --repo)/Library/Taps/purplebooth/$FORMULA_LOCATION"
+          cd "$(brew --repo)/Library/Taps/purplebooth/homebrew-repo"
+          git commit -m "fix: Update $REPOSITORY_NAME to $(echo $GIT_TAG | sed 's/^refs\/tags\///')"
       - shell: bash
         run: |
           brew test-bot \
