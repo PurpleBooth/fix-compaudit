@@ -81,7 +81,7 @@ jobs:
           EMAIL: ${{ github.actor }}@users.noreply.github.com
         run: |
           brew update
-          brew tap purplebooth/homebrew-repo
+          brew tap purplebooth/repo
           cp formula/formula.rb "$(brew --repo)/Library/Taps/purplebooth/$FORMULA_LOCATION"
 
           find $(brew --repo)/Library/ -name duti.rb -o -name fmdiff.rb -o -name rbenv-gemset.rb -o -name re2c.rb -delete
@@ -90,7 +90,7 @@ jobs:
           brew test-bot \
             --bintray-org="$BINTRAY_ORG" \
             --root-url="$BINTRAY_DL_URL" \
-            --tap=purplebooth/homebrew-repo \
+            --tap=purplebooth/repo \
             --git-name="$GITHUB_ACTOR" \
             --git-email="$GITHUB_ACTOR@users.noreply.github.com" \
             "purplebooth/repo/$REPOSITORY_NAME"
@@ -119,7 +119,7 @@ jobs:
             --ci-upload \
             --bintray-org="$BINTRAY_ORG" \
             --root-url="$BINTRAY_DL_URL" \
-            --tap=purplebooth/homebrew-repo \
+            --tap=purplebooth/repo \
             --git-name="$GITHUB_ACTOR" \
             --git-email="$GITHUB_ACTOR@users.noreply.github.com" \
             --publish
