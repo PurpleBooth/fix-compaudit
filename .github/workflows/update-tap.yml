@@ -86,6 +86,7 @@ jobs:
           cp formula/formula.rb "$(brew --repo)/Library/Taps/purplebooth/$FORMULA_LOCATION"
           git add "$(brew --repo)/Library/Taps/purplebooth/$FORMULA_LOCATION"
           cd "$(brew --repo)/Library/Taps/purplebooth/homebrew-repo"
+          git add .
           git commit -m "fix: Update $REPOSITORY_NAME to $(echo $GIT_TAG | sed 's/^refs\/tags\///')"
       - shell: bash
         run: |
