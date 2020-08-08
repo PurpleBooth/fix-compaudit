@@ -87,7 +87,7 @@ jobs:
             --tap=purplebooth/repo \
             --git-name="$GITHUB_ACTOR" \
             --git-email="$GITHUB_ACTOR@users.noreply.github.com" \
-            formula/formula.rb
+            "purplebooth/repo/$REPOSITORY_NAME"
         env:
           REPOSITORY_NAME: ${{ steps.get_repository_name.outputs.REPOSITORY_NAME }}
           BINTRAY_DL_URL: https://dl.bintray.com/purplebooth/bottles-repo
@@ -117,8 +117,9 @@ jobs:
             --git-name="$GITHUB_ACTOR" \
             --git-email="$GITHUB_ACTOR@users.noreply.github.com" \
             --publish \
-            formula/formula.rb
+            "purplebooth/repo/$REPOSITORY_NAME"
         env:
+          REPOSITORY_NAME: ${{ steps.get_repository_name.outputs.REPOSITORY_NAME }}
           HOMEBREW_BINTRAY_USER: purplebooth
           HOMEBREW_BINTRAY_KEY: "${{ secrets.HOMEBREW_BINTRAY_KEY }}"
           BINTRAY_DL_URL: https://dl.bintray.com/purplebooth/bottles-repo
