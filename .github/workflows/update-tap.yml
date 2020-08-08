@@ -45,6 +45,7 @@ jobs:
            - user: "$GH_USERNAME"
              oauth_token: "$GITHUB_TOKEN"
           EOF
+          brew update
           brew install github/gh/gh
         env:
           GH_USERNAME: ${{ github.repository_owner }}
