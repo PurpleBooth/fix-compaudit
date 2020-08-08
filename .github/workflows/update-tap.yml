@@ -78,6 +78,9 @@ jobs:
         run: brew install-bundler-gems
       - shell: bash
         run: |
+          brew tap purplebooth/repo
+          cp formula/formula.rb "$(brew --repo)/Library/Taps/purplebooth/homebrew-repo/Formula/$REPOSITORY_NAME.rb"
+          brew install "purplebooth/repo/$REPOSITORY_NAME"
           brew test-bot \
             --bintray-org="$BINTRAY_ORG" \
             --root-url="$BINTRAY_DL_URL" \
