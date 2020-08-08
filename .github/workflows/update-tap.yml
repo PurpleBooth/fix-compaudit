@@ -81,6 +81,7 @@ jobs:
           REPOSITORY_NAME: ${{ steps.get_repository_name.outputs.REPOSITORY_NAME }}
           BINTRAY_DL_URL: https://dl.bintray.com/purplebooth/bottles-repo
           BINTRAY_ORG: purplebooth
+          UPSTREAM_PULL_REQUEST: screw-you-test-bot
       - shell: bash
         run: |
           curl \
@@ -113,6 +114,7 @@ jobs:
           HOMEBREW_BINTRAY_KEY: "${{ secrets.HOMEBREW_BINTRAY_KEY }}"
           BINTRAY_DL_URL: https://dl.bintray.com/purplebooth/bottles-repo
           BINTRAY_ORG: purplebooth
+          UPSTREAM_PULL_REQUEST: screw-you-test-bot
       - shell: bash
         run: |
           mkdir -p $HOME/.config/gh/
