@@ -37,19 +37,6 @@ jobs:
       - generate-formula
     runs-on: macos-latest
     steps:
-      - shell: bash
-        run: |
-          mkdir -p $HOME/.config/gh/
-          cat > $HOME/.config/gh/config.yml <<EOF
-          github.com:
-           - user: "$GH_USERNAME"
-             oauth_token: "$GITHUB_TOKEN"
-          EOF
-          brew update
-          brew install github/gh/gh
-        env:
-          GH_USERNAME: ${{ github.repository_owner }}
-          GITHUB_TOKEN: ${{ secrets.COMMITTER_TOKEN }}
       - id: get_repository_name
         run: echo ::set-output "name=REPOSITORY_NAME::$(echo "$GITHUB_REPOSITORY" | awk -F / '{print $2}' | sed -e "s/:refs//")"
         shell: bash
@@ -79,6 +66,7 @@ jobs:
         run: brew install-bundler-gems
       - shell: bash
         run: |
+          brew update-reset
           brew tap purplebooth/repo
           cp formula/formula.rb "$(brew --repo)/Library/Taps/purplebooth/homebrew-repo/Formula/$REPOSITORY_NAME.rb"
           brew install "purplebooth/repo/$REPOSITORY_NAME"
@@ -127,7 +115,18 @@ jobs:
           BINTRAY_ORG: purplebooth
       - shell: bash
         run: |
-          cp formula/formula.rb "$(brew --repo)/Library/Taps/purplebooth/$FORMULA_LOCATION"
+          mkdir -p $HOME/.config/gh/
+          cat > $HOME/.config/gh/config.yml <<EOF
+          github.com:
+           - user: "$GH_USERNAME"
+             oauth_token: "$GITHUB_TOKEN"
+          EOF
+          brew install github/gh/gh
+        env:
+          GH_USERNAME: ${{ github.repository_owner }}
+          GITHUB_TOKEN: ${{ secrets.COMMITTER_TOKEN }}
+      - shell: bash
+        run: |
           cd "$(brew --repo)/Library/Taps/purplebooth/homebrew-repo"
           git add .
           git commit -m "fix: Update formula"
