@@ -108,7 +108,7 @@ jobs:
           BINTRAY_DL_URL: https://dl.bintray.com/purplebooth/bottles-repo
           BINTRAY_ORG: purplebooth
       - shell: bash
-        name: Reinstall gh (it's removed as part of testing the formula)
+        name: Open a PR on the custom tap repository
         run: |
           mkdir -p $HOME/.config/gh/
           cat > $HOME/.config/gh/config.yml <<EOF
@@ -117,12 +117,7 @@ jobs:
              oauth_token: "$GITHUB_TOKEN"
           EOF
           brew install github/gh/gh
-        env:
-          GH_USERNAME: ${{ github.repository_owner }}
-          GITHUB_TOKEN: ${{ secrets.COMMITTER_TOKEN }}
-      - shell: bash
-        name: Open a PR on the custom tap repository
-        run: |
+
           cd "$(brew --repo)/Library/Taps/purplebooth/homebrew-repo"
           git switch -c "$REPOSITORY_NAME-$(echo $GIT_TAG | sed 's/^refs\/tags\///')"
           brew install github/gh/gh
@@ -131,4 +126,5 @@ jobs:
           REPOSITORY_NAME: ${{ steps.get_repository_name.outputs.REPOSITORY_NAME }}
           GIT_TAG: ${{ github.ref }}
           FORMULA_LOCATION: homebrew-repo/Formula/${{ steps.get_repository_name.outputs.REPOSITORY_NAME }}.rb
-          GITHUB_TOKEN: "${{ secrets.COMMITTER_TOKEN }}"
+          GH_USERNAME: ${{ github.repository_owner }}
+          GITHUB_TOKEN: ${{ secrets.COMMITTER_TOKEN }}
