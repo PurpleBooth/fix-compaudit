@@ -70,6 +70,7 @@ jobs:
           brew tap purplebooth/repo
           cp formula/formula.rb "$(brew --repo)/Library/Taps/purplebooth/homebrew-repo/Formula/$REPOSITORY_NAME.rb"
           brew install "purplebooth/repo/$REPOSITORY_NAME"
+          unset GITHUB_ACTIONS
           brew test-bot \
             --bintray-org="$BINTRAY_ORG" \
             --root-url="$BINTRAY_DL_URL" \
@@ -99,6 +100,7 @@ jobs:
           BINTRAY_ORG: purplebooth
       - shell: bash
         run: |
+          unset GITHUB_ACTIONS
           brew test-bot \
             --ci-upload \
             --bintray-org="$BINTRAY_ORG" \
