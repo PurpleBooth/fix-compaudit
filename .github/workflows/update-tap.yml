@@ -67,6 +67,7 @@ jobs:
       - shell: bash
         run: |
           brew update-reset
+          brew test-bot --cleanup --only-cleanup-before
           brew tap purplebooth/repo
           cp formula/formula.rb "$(brew --repo)/Library/Taps/purplebooth/homebrew-repo/Formula/$REPOSITORY_NAME.rb"
           brew install "purplebooth/repo/$REPOSITORY_NAME"
