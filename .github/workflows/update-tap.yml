@@ -57,78 +57,13 @@ jobs:
           path: homebrew-repo
           ref: "main"
         name: Checkout the custom tap
-      - uses: actions/checkout@v2.3.2
-        with:
-          token: ${{ secrets.COMMITTER_TOKEN }}
-          path: source-repo
-        name: Checkout the this repository
-      - name: Set up Homebrew
-        id: set-up-homebrew
-        uses: Homebrew/actions/setup-homebrew@master
-      - name: Cache Homebrew Bundler RubyGems
-        id: cache
-        uses: actions/cache@master
-        with:
-          path: ${{ steps.set-up-homebrew.outputs.gems-path }}
-          key: ${{ runner.os }}-rubygems-${{ steps.set-up-homebrew.outputs.gems-hash }}
-          restore-keys: ${{ runner.os }}-rubygems-
-      - name: Install Homebrew Bundler RubyGems
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: brew install-bundler-gems
-      - name: Test the formula
-        shell: bash
-        run: |
-          brew update-reset
-          brew test-bot --cleanup --only-cleanup-before
-          brew tap purplebooth/repo
-          cp formula/formula.rb "$(brew --repo)/Library/Taps/purplebooth/homebrew-repo/Formula/$REPOSITORY_NAME.rb"
-          brew install "purplebooth/repo/$REPOSITORY_NAME"
-          unset GITHUB_ACTIONS
-          brew test-bot \
-            --bintray-org="$BINTRAY_ORG" \
-            --root-url="$BINTRAY_DL_URL" \
-            --tap=purplebooth/repo \
-            --git-name="$GITHUB_ACTOR" \
-            --git-email="$GITHUB_ACTOR@users.noreply.github.com" \
-            "purplebooth/repo/$REPOSITORY_NAME"
-        env:
-          REPOSITORY_NAME: ${{ steps.get_repository_name.outputs.REPOSITORY_NAME }}
-          BINTRAY_DL_URL: https://dl.bintray.com/purplebooth/bottles-repo
-          BINTRAY_ORG: purplebooth
-      - shell: bash
-        name: Build binaries for the formula
-        run: |
-          unset GITHUB_ACTIONS
-          brew test-bot \
-            --ci-upload \
-            --bintray-org="$BINTRAY_ORG" \
-            --root-url="$BINTRAY_DL_URL" \
-            --tap=purplebooth/repo \
-            --git-name="$GITHUB_ACTOR" \
-            --git-email="$GITHUB_ACTOR@users.noreply.github.com" \
-            --publish \
-            "purplebooth/repo/$REPOSITORY_NAME"
-        env:
-          REPOSITORY_NAME: ${{ steps.get_repository_name.outputs.REPOSITORY_NAME }}
-          HOMEBREW_BINTRAY_USER: purplebooth
-          HOMEBREW_BINTRAY_KEY: "${{ secrets.HOMEBREW_BINTRAY_KEY }}"
-          BINTRAY_DL_URL: https://dl.bintray.com/purplebooth/bottles-repo
-          BINTRAY_ORG: purplebooth
       - shell: bash
         name: Open a PR on the custom tap repository
         run: |
-          mkdir -p $HOME/.config/gh/
-          cat > $HOME/.config/gh/config.yml <<EOF
-          github.com:
-           - user: "$GH_USERNAME"
-             oauth_token: "$GITHUB_TOKEN"
-          EOF
-          brew install github/gh/gh
-
-          git -C homebrew-repo remote add tap "$(brew --repo)/Library/Taps/purplebooth/homebrew-repo"
           git -C homebrew-repo switch -c "$REPOSITORY_NAME-$(echo $GIT_TAG | sed 's/^refs\/tags\///')"
-          git -C homebrew-repo fetch tap
-          git -C homebrew-repo merge --no-ff tap/main
+          cp formula/formula.rb "homebrew-repo/Formula/$REPOSITORY_NAME.rb"
+          git -C homebrew-repo add "homebrew-repo/Formula/$REPOSITORY_NAME.rb"
+          git -C homebrew-repo commit -m "Add new formula" 
           (cd homebrew-repo && gh pr create --label bottles --base main --fill)
         env:
           REPOSITORY_NAME: ${{ steps.get_repository_name.outputs.REPOSITORY_NAME }}
