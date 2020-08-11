@@ -1,0 +1,31 @@
+pull_request_rules:
+  - name: automatic squash merge for main when tests pass
+    conditions:
+      - status-success=Lint Commit Message
+      - status-success=Test
+      - base=main
+      - label=automerge-squash
+    actions:
+      merge:
+        strict: smart+fasttrack
+        method: squash
+  - name: automatic rebase for main when tests pass
+    conditions:
+      - status-success=Lint Commit Message
+      - status-success=Test
+      - base=main
+      - label=automerge-rebase
+    actions:
+      merge:
+        strict: smart+fasttrack
+        method: rebase
+  - name: automatic rebase for releases
+    conditions:
+      - status-success=Lint Commit Message
+      - status-success=Test
+      - base=main
+      - label=releases
+    actions:
+      merge:
+        strict: smart+fasttrack
+        method: rebase
