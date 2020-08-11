@@ -1,8 +1,11 @@
 pull_request_rules:
   - name: automatic squash merge for main when tests pass
     conditions:
-      - status-success=Lint Commit Message
-      - status-success=Test
+      - status-success=security-audit
+      - status-success=check
+      - status-success=version
+      - status-success=test
+      - status-success=lints
       - base=main
       - label=automerge-squash
     actions:
