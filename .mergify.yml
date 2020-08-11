@@ -4,7 +4,8 @@ pull_request_rules:
       - status-success=security-audit
       - status-success=check
       - status-success=version
-      - status-success=test
+      - status-success=test (macos-latest, echo nothing-to-install)
+      - status-success=test (ubuntu-latest, sudo apt-get install -y libxcb-shape0-dev libxcb-xfixes0-dev)
       - status-success=lints
       - base=main
       - label=automerge-squash
@@ -14,8 +15,12 @@ pull_request_rules:
         method: squash
   - name: automatic rebase for main when tests pass
     conditions:
-      - status-success=Lint Commit Message
-      - status-success=Test
+      - status-success=security-audit
+      - status-success=check
+      - status-success=version
+      - status-success=test (macos-latest, echo nothing-to-install)
+      - status-success=test (ubuntu-latest, sudo apt-get install -y libxcb-shape0-dev libxcb-xfixes0-dev)
+      - status-success=lints
       - base=main
       - label=automerge-rebase
     actions:
@@ -24,11 +29,16 @@ pull_request_rules:
         method: rebase
   - name: automatic rebase for releases
     conditions:
-      - status-success=Lint Commit Message
-      - status-success=Test
+      - status-success=security-audit
+      - status-success=check
+      - status-success=version
+      - status-success=test (macos-latest, echo nothing-to-install)
+      - status-success=test (ubuntu-latest, sudo apt-get install -y libxcb-shape0-dev libxcb-xfixes0-dev)
+      - status-success=lints
       - base=main
       - label=releases
     actions:
       merge:
         strict: smart+fasttrack
         method: rebase
+
