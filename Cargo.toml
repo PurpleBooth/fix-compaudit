@@ -1,6 +1,6 @@
 [package]
 name = "fix-compaudit"
-version = "0.46.39"
+version = "0.46.40"
 authors = [ "Billie Thompson <billie+fix-compaudit@billiecodes.com>" ]
 edition = "2018"
 description = "Correct the permissions problems that highlighted by `compaudit`. Fixing these is kinda a pain to do manually. This should fix them."
