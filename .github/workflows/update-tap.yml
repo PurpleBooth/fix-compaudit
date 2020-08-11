@@ -1,3 +1,4 @@
+name: Release to Homebrew
 "on":
   push:
     tags:
