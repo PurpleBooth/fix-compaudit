@@ -11,7 +11,7 @@ keywords = [ "zsh", "permissions" ]
 categories = [ "command-line-utilities" ]
 
 [dependencies]
-users = "0.10"
+users = "0.11"
 clap = "~2.33"
 
 [dev-dependencies]
