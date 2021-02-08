@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2.3.4
         name: Checkout the repository
-      - uses: actions/cache@v2
+      - uses: actions/cache@v2.1.4
         name: Cache cargo
         with:
           path: |
@@ -36,7 +36,7 @@ jobs:
         name: Checkout this repository
         with:
           fetch-depth: 0
-      - uses: actions/cache@v2
+      - uses: actions/cache@v2.1.4
         name: Cache cargo
         with:
           path: |
@@ -82,7 +82,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2.3.4
-      - uses: actions/cache@v2
+      - uses: actions/cache@v2.1.4
         with:
           path: |
             ~/.cargo/registry
@@ -112,7 +112,7 @@ jobs:
         env:
           DEBIAN_FRONTEND: noninteractive
       - uses: actions/checkout@v2.3.4
-      - uses: actions/cache@v2
+      - uses: actions/cache@v2.1.4
         with:
           path: |
             ~/.cargo/registry
@@ -133,7 +133,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2.3.4
-      - uses: actions/cache@v2
+      - uses: actions/cache@v2.1.4
         with:
           path: |
             ~/.cargo/registry
@@ -174,7 +174,7 @@ jobs:
         with:
           token: "${{ secrets.COMMITTER_TOKEN }}"
           fetch-depth: 0
-      - uses: actions/cache@v2
+      - uses: actions/cache@v2.1.4
         with:
           path: |
             ~/.cargo/registry
