@@ -98,11 +98,7 @@ mod tests {
 
     #[test]
     fn it_does_nothing_on_no_errors() {
-        fn mock_comp_audit() -> Result<Vec<std::path::PathBuf>> {
-            Ok(Vec::new())
-        }
-
-        assert_eq!(true, fix_comp_audit_problems(mock_comp_audit).is_ok())
+        assert_eq!(true, fix_comp_audit_problems(|| Ok(Vec::new())).is_ok())
     }
 
     #[test]
