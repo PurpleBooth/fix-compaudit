@@ -15,5 +15,5 @@ projects:
 sizes:
   major: [ "!" ]
   minor: [ feat ]
-  patch: [ fix, docs, style, refactor, perf, test, chore, ci, build ]
+  patch: [ fix, docs, style, refactor, perf, test, chore, build, ci, build ]
   fail: ['*']
