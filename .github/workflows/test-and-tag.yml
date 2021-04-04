@@ -26,12 +26,29 @@ jobs:
   version:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions-rs/toolchain@v1
+        name: Install rust toolchain
+        with:
+          default: true
+          profile: minimal
+          toolchain: stable
       - name: Checkout code
         uses: actions/checkout@v2.3.4
         with:
           fetch-depth: 0
-      - name: Get versio
-        uses: chaaz/versio-actions/install@v1
+      - uses: actions/cache@v2.1.4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            ~/.cargo/bin
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+      - uses: actions-rs/cargo@v1
+        name: Install change log generator
+        with:
+          command: install
+          args: versio
       - name: Check projects
         run: versio check
       - name: Print changes
@@ -132,8 +149,12 @@ jobs:
         with:
           token: "${{ secrets.COMMITTER_TOKEN }}"
           fetch-depth: 0
-      - name: Get versio
-        uses: chaaz/versio-actions/install@v1
+      - uses: actions-rs/toolchain@v1
+        name: Install rust toolchain
+        with:
+          default: true
+          profile: minimal
+          toolchain: stable
       - uses: actions/cache@v2.1.4
         with:
           path: |
@@ -142,6 +163,11 @@ jobs:
             ~/.cargo/bin
             target
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+      - uses: actions-rs/cargo@v1
+        name: Install change log generator
+        with:
+          command: install
+          args: versio
       - name: Generate release
         run: versio release
         env:
