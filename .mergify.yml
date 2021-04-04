@@ -1,5 +1,5 @@
 pull_request_rules:
-  - name: automatic squash merge for main when tests pass
+  - name: request review on external contributor
     conditions:
       - status-success=security-audit
       - status-success=check
@@ -8,25 +8,12 @@ pull_request_rules:
       - status-success=test (ubuntu-latest, sudo apt-get install -y libxcb-shape0-dev libxcb-xfixes0-dev)
       - status-success=lints
       - base=main
-      - label=automerge-squash
+      - -author~=^dependabot(|-preview)\[bot\]$
+      - -author=PurpleBooth
     actions:
-      merge:
-        strict: smart+fasttrack
-        method: squash
-  - name: automatic rebase for main when tests pass
-    conditions:
-      - status-success=security-audit
-      - status-success=check
-      - status-success=version
-      - status-success=test (macos-latest, echo nothing-to-install)
-      - status-success=test (ubuntu-latest, sudo apt-get install -y libxcb-shape0-dev libxcb-xfixes0-dev)
-      - status-success=lints
-      - base=main
-      - label=automerge-rebase
-    actions:
-      merge:
-        strict: smart+fasttrack
-        method: rebase
+      request_reviews:
+        users:
+          - PurpleBooth
   - name: automatic rebase for releases
     conditions:
       - status-success=security-audit
@@ -50,7 +37,7 @@ pull_request_rules:
       - status-success=test (ubuntu-latest, sudo apt-get install -y libxcb-shape0-dev libxcb-xfixes0-dev)
       - status-success=lints
       - base=main
-      - label=dependencies
+      - author~=^dependabot(|-preview)\[bot\]$
     actions:
       merge:
         strict: smart+fasttrack
