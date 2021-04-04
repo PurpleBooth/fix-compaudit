@@ -26,18 +26,29 @@ jobs:
   version:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions-rs/toolchain@v1
+        name: Install rust toolchain
+        with:
+          default: true
+          profile: minimal
+          toolchain: stable
       - name: Checkout code
         uses: actions/checkout@v2.3.4
         with:
           fetch-depth: 0
-      - name: Install Versio
-        shell: bash
-        run: |
-          mkdir -p $HOME/.bin
-          curl -L "$(curl -sL https://api.github.com/repos/chaaz/versio/releases/latest \
-                                 | jq -r '.assets[] | select(.browser_download_url | contains("linux-gnu")) | .browser_download_url')" -o $HOME/.bin/versio
-          chmod a+x $HOME/.bin/versio
-          echo "$HOME/.bin" >> $GITHUB_PATH
+      - uses: actions/cache@v2.1.4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            ~/.cargo/bin
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+      - uses: actions-rs/cargo@v1
+        name: Install change log generator
+        with:
+          command: install
+          args: versio
       - name: Check projects
         run: versio check
       - name: Print changes
@@ -141,14 +152,25 @@ jobs:
         with:
           token: "${{ secrets.COMMITTER_TOKEN }}"
           fetch-depth: 0
-      - name: Install Versio
-        shell: bash
-        run: |
-          mkdir -p $HOME/.bin
-          curl -L "$(curl -sL https://api.github.com/repos/chaaz/versio/releases/latest \
-                                 | jq -r '.assets[] | select(.browser_download_url | contains("linux-gnu")) | .browser_download_url')" -o $HOME/.bin/versio
-          chmod a+x $HOME/.bin/versio
-          echo "$HOME/.bin" >> $GITHUB_PATH
+      - uses: actions-rs/toolchain@v1
+        name: Install rust toolchain
+        with:
+          default: true
+          profile: minimal
+          toolchain: stable
+      - uses: actions/cache@v2.1.4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            ~/.cargo/bin
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+      - uses: actions-rs/cargo@v1
+        name: Install change log generator
+        with:
+          command: install
+          args: versio
       - name: Generate release
         run: versio release
         env:
