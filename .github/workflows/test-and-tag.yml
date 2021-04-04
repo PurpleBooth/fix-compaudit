@@ -53,9 +53,6 @@ jobs:
         run: versio check
       - name: Print changes
         run: versio plan
-        env:
-          GITHUB_TOKEN: ${{ secrets.COMMITTER_TOKEN }}
-          GITHUB_USER: ${{ github.actor }}
   check:
     runs-on: ubuntu-latest
     steps:
