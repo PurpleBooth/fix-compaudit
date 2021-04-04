@@ -13,8 +13,7 @@ projects:
     post_write: cargo fetch
 
 sizes:
-  major: ['!']
-  minor: [feat]
-  patch: [deps, fix, ci, docs, style, refactor, perf, test, chore, build]
-  none: []
+  major: [ "!" ]
+  minor: [ feat ]
+  patch: [ fix, docs, style, refactor, perf, test, chore, ci, build ]
   fail: ['*']
