@@ -26,16 +26,58 @@ jobs:
   version:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2.3.4
+      - uses: actions-rs/toolchain@v1
+        name: Install rust toolchain
+        with:
+          profile: minimal
+          toolchain: stable
+          default: true
+      - uses: actions/checkout@v2.3.4
+        name: Checkout this repository
         with:
           fetch-depth: 0
-      - name: Get versio
-        uses: chaaz/versio-actions/install@v1
-      - name: Check projects
-        run: versio check
-      - name: Print changes
-        run: versio plan
+      - uses: actions/cache@v2.1.4
+        name: Cache cargo
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            ~/.cargo/bin
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+      - run: git fetch origin +refs/tags/*:refs/tags/*
+        name: Fetch the previous versions
+      - id: get_previous_version
+        name: Calculate last previous version
+        run: echo ::set-output name=PREVIOUS_VERSION::$(git tag | sort --version-sort | tail -n 1)
+        shell: bash
+      - id: get_last_common_commit
+        name: Calculate last common commit
+        run: echo ::set-output name=LAST_COMMON_COMMIT::$(git merge-base "$THIS" "$PREVIOUS_VERSION")
+        shell: bash
+        env:
+          PREVIOUS_VERSION: "${{ steps.get_previous_version.outputs.PREVIOUS_VERSION }}"
+          THIS: "${{ github.sha }}"
+      - uses: actions-rs/cargo@v1
+        name: Install version calculator
+        with:
+          command: install
+          args: what-bump --force
+      - run: mkdir -p ./version
+        name: Create version file directory
+      - run: |
+          what-bump "${LAST_COMMON_COMMIT}" --from "${PREVIOUS_VERSION:1}" > ./version/no_prefix_version
+          echo "v" > ./version/prefix
+          cat ./version/prefix ./version/no_prefix_version | tr  -d '\n' > ./version/version
+        env:
+          PREVIOUS_VERSION: "${{ steps.get_previous_version.outputs.PREVIOUS_VERSION }}"
+          LAST_COMMON_COMMIT: "${{ steps.get_last_common_commit.outputs.LAST_COMMON_COMMIT }}"
+        name: Calculate next version
+      - uses: actions/upload-artifact@v2
+        name: Store next version
+        with:
+          name: version
+          path: ./version/version
   check:
     runs-on: ubuntu-latest
     steps:
@@ -119,7 +161,7 @@ jobs:
           # This part is also where you can pass other options, for example:
           prettier_options: --check **/*.{yml,yaml}
   merge-and-push:
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && !contains(github.event.head_commit.message, 'Update cargo package version to v')
     needs:
       - version
       - test
@@ -132,8 +174,6 @@ jobs:
         with:
           token: "${{ secrets.COMMITTER_TOKEN }}"
           fetch-depth: 0
-      - name: Get versio
-        uses: chaaz/versio-actions/install@v1
       - uses: actions/cache@v2.1.4
         with:
           path: |
@@ -142,8 +182,36 @@ jobs:
             ~/.cargo/bin
             target
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-      - name: Generate release
-        run: versio release
+      - uses: actions/download-artifact@v2
+      - id: get_current_version
+        run: |
+          echo ::set-output name=VERSION::$(cat ./version/version | cut -c2-)
+          echo ::set-output name=V_VERSION::$(cat ./version/version)
+        shell: bash
+      - uses: ciiiii/toml-editor@1.0.0
+        with:
+          file: "Cargo.toml"
+          key: "package.version"
+          value: ${{ steps.get_current_version.outputs.VERSION }}
+      - uses: actions-rs/cargo@v1
+        with:
+          command: check
+      - shell: bash
         env:
-          GITHUB_TOKEN: ${{ secrets.COMMITTER_TOKEN }}
-          GITHUB_USER: ${{ github.actor }}
+          GITHUB_ACTOR: ${{ github.actor }}
+        run: |
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+          git commit -am "fix: Update cargo package version to $(cat ./version/version)"
+          git tag -a -m "Release $(cat ./version/version)" "$(cat ./version/version)"
+          git push --tags
+
+          git checkout -b "release-$(cat ./version/version)"
+          git push -f origin "release-$(cat ./version/version)"
+      - name: pull-request
+        uses: repo-sync/pull-request@v2
+        with:
+          github_token: "${{ secrets.COMMITTER_TOKEN }}"
+          pr_label: "releases"
+          destination_branch: "main"
+          source_branch: "release-${{ steps.get_current_version.outputs.V_VERSION }}"
