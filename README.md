@@ -1,7 +1,7 @@
 # Fix Compaudit Issues
 
 Correct the permissions problems that highlighted by `compaudit`. Fixing
-these is kinda a pain to do manually. This should fix them.
+these is kinda a pain to do manually.
 
 Depends on having `chmod`, `chown`, `zsh` and `compaudit` available.
 
