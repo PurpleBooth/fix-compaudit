@@ -98,7 +98,7 @@ mod tests {
 
     #[test]
     fn it_does_nothing_on_no_errors() {
-        assert_eq!(true, fix_comp_audit_problems(|| Ok(Vec::new())).is_ok())
+        assert!(fix_comp_audit_problems(|| Ok(Vec::new())).is_ok());
     }
 
     #[test]
@@ -107,7 +107,7 @@ mod tests {
             Err(Box::from("test"))
         }
 
-        assert_eq!(true, fix_comp_audit_problems(mock_comp_audit).is_err())
+        assert!(fix_comp_audit_problems(mock_comp_audit).is_err());
     }
 
     #[test]
@@ -127,7 +127,7 @@ mod tests {
             Ok(vec![std::path::PathBuf::from(&file_path.to_str().unwrap())])
         };
 
-        assert_eq!(true, fix_comp_audit_problems(mock_comp_audit).is_ok());
+        assert!(fix_comp_audit_problems(mock_comp_audit).is_ok());
         let metadata = fs::metadata(file_path).unwrap();
         assert_eq!(metadata.uid(), get_current_uid());
     }
@@ -154,7 +154,7 @@ mod tests {
             Ok(vec![std::path::PathBuf::from(&dir_path.to_str().unwrap())])
         };
 
-        assert_eq!(true, fix_comp_audit_problems(mock_comp_audit).is_ok());
+        assert!(fix_comp_audit_problems(mock_comp_audit).is_ok());
         let metadata = fs::metadata(file_path).unwrap();
         assert_eq!(metadata.uid(), get_current_uid());
     }
@@ -175,7 +175,7 @@ mod tests {
             Ok(vec![std::path::PathBuf::from(&file_path.to_str().unwrap())])
         };
 
-        assert_eq!(true, fix_comp_audit_problems(mock_comp_audit).is_ok());
+        assert!(fix_comp_audit_problems(mock_comp_audit).is_ok());
         let metadata = fs::metadata(file_path).unwrap();
         let actual = metadata.permissions().mode();
 
@@ -204,7 +204,7 @@ mod tests {
             Ok(vec![std::path::PathBuf::from(&file_path.to_str().unwrap())])
         };
 
-        assert_eq!(true, fix_comp_audit_problems(mock_comp_audit).is_ok());
+        assert!(fix_comp_audit_problems(mock_comp_audit).is_ok());
         let metadata = fs::metadata(file_path).unwrap();
         let actual = metadata.permissions().mode();
 
@@ -246,7 +246,7 @@ mod tests {
             Ok(vec![std::path::PathBuf::from(&dir_path.to_str().unwrap())])
         };
 
-        assert_eq!(true, fix_comp_audit_problems(mock_comp_audit).is_ok());
+        assert!(fix_comp_audit_problems(mock_comp_audit).is_ok());
         let metadata = fs::metadata(file_path).unwrap();
         let actual = metadata.permissions().mode();
 
