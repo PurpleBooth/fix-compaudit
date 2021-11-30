@@ -12,7 +12,7 @@ categories = [ "command-line-utilities" ]
 
 [dependencies]
 users = "0.11"
-clap = "~2.33"
+clap = "~2.34"
 
 [dev-dependencies]
 tempfile = "3"
