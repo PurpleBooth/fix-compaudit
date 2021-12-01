@@ -119,7 +119,7 @@ jobs:
             --all-targets --all-features -- -D warnings -Dclippy::all -D clippy::pedantic
             -D clippy::cargo -A clippy::multiple-crate-versions
       - name: Prettify code
-        uses: creyD/prettier_action@v4.0
+        uses: creyD/prettier_action@v4.1
         with:
           # This part is also where you can pass other options, for example:
           prettier_options: --check **/*.{yml,yaml}
