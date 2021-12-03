@@ -12,6 +12,8 @@ jobs:
     uses: PurpleBooth/common-pipelines/.github/workflows/commit-check.yml@main
   rust-checks:
     uses: PurpleBooth/common-pipelines/.github/workflows/rust-check.yml@main
+    with:
+      run_on_windows: false
 
   release:
     if: github.ref == 'refs/heads/main'
@@ -35,6 +37,7 @@ jobs:
     - release
     uses: PurpleBooth/common-pipelines/.github/workflows/release-rust-binary.yml@main
     with:
+      run_on_windows: false
       current_version: ${{ needs.release.outputs.current_version }}
       previous_version: ${{ needs.release.outputs.previous_version }}
     secrets:
