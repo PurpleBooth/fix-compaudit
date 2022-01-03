@@ -11,8 +11,8 @@ keywords = [ "zsh", "permissions" ]
 categories = [ "command-line-utilities" ]
 
 [dependencies]
-users = "0.11"
-clap = "~2.34"
+users = "0.11.0"
+clap = { version = "3.0.0", features = ["derive", "cargo", "wrap_help", "yaml", "env", "unicode" ] }
 
 [dev-dependencies]
-tempfile = "3"
+tempfile = "3.2.0"
