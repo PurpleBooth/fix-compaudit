@@ -3,13 +3,19 @@ queue_rules:
   speculative_checks: 20
   batch_size: 20
   conditions:
-  - status-success~=^docker-build
-  - status-success~=^lint-markdown
-  - status-success~=^specdown
-  - status-success~=^version
-  - status-success~=^rust-check
-  - '#check-pending<=1'
-  - '#check-success>5'
+  - check-success=lint-markdown / lint-markdown
+  - check-success=commit-checks / version
+  - check-success=rust-checks / check
+  - check-success=rust-checks / test (macos-latest)
+  - check-success=rust-checks / test (ubuntu-latest)
+  - check-success=rust-checks / test (windows-latest)
+  - check-success=rust-checks / lints (macos-latest)
+  - check-success=rust-checks / lints (ubuntu-latest)
+  - check-success=rust-checks / lints (windows-latest)
+  - check-success=rust-checks / security-audit
+  - check-success=rust-checks / bench (macos-latest)
+  - check-success=rust-checks / bench (ubuntu-latest)
+  - check-success=rust-checks / bench (windows-latest)
 
 pull_request_rules:
 - name: request review on external contributor
@@ -22,13 +28,20 @@ pull_request_rules:
 
 - name: automatic rebase for dependencies
   conditions:
-  - status-success~=^lint-markdown
-  - status-success~=^commit-checks
-  - status-success~=^rust-check
+  - check-success=lint-markdown / lint-markdown
+  - check-success=commit-checks / version
+  - check-success=rust-checks / check
+  - check-success=rust-checks / test (macos-latest)
+  - check-success=rust-checks / test (ubuntu-latest)
+  - check-success=rust-checks / test (windows-latest)
+  - check-success=rust-checks / lints (macos-latest)
+  - check-success=rust-checks / lints (ubuntu-latest)
+  - check-success=rust-checks / lints (windows-latest)
+  - check-success=rust-checks / security-audit
+  - check-success=rust-checks / bench (macos-latest)
+  - check-success=rust-checks / bench (ubuntu-latest)
+  - check-success=rust-checks / bench (windows-latest)
   - base=main
-  - '#check-pending<=1'
-  - '#check-success>=13'
-  - label=dependencies
   - author~=^dependabot(|-preview)\[bot\]$
   actions:
     queue:
