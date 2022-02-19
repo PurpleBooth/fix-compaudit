@@ -2,13 +2,13 @@ extern crate clap;
 
 use std::{error, process::Command, str};
 
-use clap::{crate_authors, crate_version, App};
+use clap::{crate_authors, crate_version, Command as ClapCommand};
 use users::get_current_username;
 
 type Result<T> = std::result::Result<T, Box<dyn error::Error>>;
 
 fn main() -> Result<()> {
-    App::new(env!("CARGO_PKG_NAME"))
+    ClapCommand::new(env!("CARGO_PKG_NAME"))
         .version(crate_version!())
         .author(crate_authors!())
         .about(env!("CARGO_PKG_DESCRIPTION"))

@@ -1,6 +1,6 @@
 [package]
 name = "fix-compaudit"
-version = "0.46.73"
+version = "0.46.68"
 authors = [ "Billie Thompson <billie+fix-compaudit@billiecodes.com>" ]
 edition = "2018"
 description = "Correct the permissions problems that highlighted by `compaudit`. Fixing these is kinda a pain to do manually. This should fix them."
@@ -12,7 +12,7 @@ categories = [ "command-line-utilities" ]
 
 [dependencies]
 users = "0.11.0"
-clap = { version = "3.0.14", features = ["derive", "cargo", "wrap_help", "yaml", "env", "unicode" ] }
+clap = { version = "3.1.0", features = ["derive", "cargo", "wrap_help", "yaml", "env", "unicode" ] }
 
 [dev-dependencies]
 tempfile = "3.3.0"
