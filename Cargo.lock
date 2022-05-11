@@ -84,7 +84,7 @@ dependencies = [
 
 [[package]]
 name = "fix-compaudit"
-version = "0.46.82"
+version = "0.46.83"
 dependencies = [
  "clap",
  "tempfile",
